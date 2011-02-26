@@ -1,11 +1,11 @@
-# Algoritmos de cifrado
+= Algoritmos de cifrado
 
-## PlayFair
+== PlayFair
 Es el algoritmo en desarrollo.
 
-### IMPORTANTE
+=== IMPORTANTE
 La matrix que se usa para este algoritmo es del siguiente tipo.
-`[ [5 pos],[ 5 pos ],[ .. ],[ .. ],[ .. ] ]`
+{[ [5 pos],[ 5 pos ],[ .. ],[ .. ],[ .. ] ]`}
 
 Al momento de tomar las coordenadas, naturalmente comenzamos con la 'x' y despues 'y'. Para esta solucion es
 diferente. Se comienza con la 'y' y luego con la 'x'.
