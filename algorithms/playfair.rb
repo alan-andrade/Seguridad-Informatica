@@ -14,13 +14,18 @@ module Algorithms
         # Apply first rule to the message
         first_rule       
         
-        # Play in the matrix to finally encrypt the msg
-        finally_encrypt       
-      
-      end      
+        # Encrypt the message
+        encryption_decryption(:encrypt)             
+      end
+      def decrypt(msg)
+        sanitize_args(msg)
+        define_matrix
+        first_rule
+        encryption_decryption(:decrypt)
+      end
       
       private
-        def sanitize_args(msg, keyword)
+        def sanitize_args(msg, keyword=nil)
           raise ArgumentError, "Un argumento esta vacio" if msg.empty?
           keyword = ask_keyword if keyword.nil?
           @msg, @keyword  =   msg.delete(" "),  keyword.delete(" ")   #get rid of spaces
@@ -74,7 +79,7 @@ module Algorithms
         
         # Play with the matrix applying all the rules that this algorithm has
         # in order to finish with the encryption
-        def finally_encrypt
+        def encryption_decryption(action)
           @encrypted_msg  = ''
           # Smelly code. giak! try to refactor using a function that iterates and yields a pair of chars.
           index = 0
@@ -84,7 +89,7 @@ module Algorithms
             b_coords  = find_char_in_matrix(@msg[index+1])
             
             # Apply rules of movement in the key matrix
-            movement_in_matrix(a_coords,b_coords)      
+            movement_in_matrix(a_coords,b_coords, action)      
                   
             index +=  2
           end
@@ -98,31 +103,33 @@ module Algorithms
           raise "No existe la letra en la matriz de llave" if x.nil? or y.nil?
         end
         
-        def movement_in_matrix(a_coords,b_coords)
+        def movement_in_matrix(a_coords,b_coords, action)
           # Keep ALL the coords in a hash to facilitate manipulation.
           coords  = Hash.new()
           coords[:x1],  coords[:y1] = a_coords[0],  a_coords[1]
           coords[:x2],  coords[:y2] = b_coords[0],  b_coords[1]
-          same_row(coords)
-          same_column(coords)
-          cross(coords)
+          same_row(coords,action)
+          same_column(coords,action)
+          cross(coords,action)
         end 
                
-        def same_row(coords)
+        def same_row(coords, action)
           if coords[:y1] == coords[:y2]
-            rotate_right = @matrix[coords[:y1]].rotate
-            @encrypted_msg += rotate_right[coords[:x1]] + rotate_right[coords[:x2]]
+            rotate = @matrix[coords[:y1]].rotate  if action==:encrypt       # Rotate Right
+            rotate = @matrix[coords[:y1]].rotate(-1)  if action==:decrypt   # Rotate Left
+            @encrypted_msg += rotate[coords[:x1]] + rotate[coords[:x2]]
           end
         end
         
-        def same_column(coords)
+        def same_column(coords, action)
           if coords[:x1] == coords[:x2]
-            rotate_down = @matrix.rotate
-            @encrypted_msg  +=  rotate_down[coords[:y1]][coords[:x1]] + rotate_down[coords[:y2]][coords[:x2]]
+            rotate  = @matrix.rotate      if action ==  :encrypt                 # Rotate Down
+            rotate  = @matrix.rotate(-1)  if action ==  :decrypt                 # Rotate Up
+            @encrypted_msg  +=  rotate[coords[:y1]][coords[:x1]] + rotate[coords[:y2]][coords[:x2]]
           end
         end
         
-        def cross(coords)
+        def cross(coords, action)
           if coords[:x1] != coords[:x2] and coords[:y1] != coords[:y2]
             @encrypted_msg += @matrix[coords[:y1]][coords[:x2]] + @matrix[coords[:y2]][coords[:x1]]
           end

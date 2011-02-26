@@ -14,7 +14,7 @@ La matrix que se usa para este algoritmo es del siguiente tipo.
 Al momento de tomar las coordenadas, naturalmente comenzamos con la 'x' y despues 'y'. Para esta solucion es
 diferente. Se comienza con la 'y' y luego con la 'x'.
 
-*Ejemplo:*
+<b>Ejemplo:<b>
 
 (arreglo de 3 x 3)
 
@@ -30,10 +30,10 @@ La posicion de 'c' seria.
 y=1
 x=c
 
-## DES
+== DES
 Aun esta en planeacion.
 
-## Para correrlo.
+== Para correrlo.
 
    require './algorithms.rb'
    Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')
