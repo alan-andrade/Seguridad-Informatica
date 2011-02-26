@@ -10,12 +10,14 @@ La matrix que se usa para este algoritmo es del siguiente tipo.
 Al momento de tomar las coordenadas, naturalmente comenzamos con la 'x' y despues 'y'. Para esta solucion es
 diferente. Se comienza con la 'y' y luego con la 'x'.
 
-* Ejemplo *
+*Ejemplo*
 (arreglo de 3 x 3)
 
-```ruby 
+```
 [ ['g', 'a', 'l'],
+
   ['o', 'b', 'c'],
+
   ['d', 'e', 'f'] ]
 ```
 La posicion de la letra 'g' seria. y=0, x=0.
@@ -31,7 +33,7 @@ Aun esta en planeacion.
 
 ## Para correrlo.
 
-```ruby
+```
 require './algorithms.rb'
 
 Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')
