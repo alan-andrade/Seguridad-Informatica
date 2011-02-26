@@ -58,13 +58,11 @@ module Algorithms
         
         def first_rule
           # helper variable to iterate over the word in pairs.        
-          index         =   0
-          
+          index         =   0          
           while index < @msg.size
             @msg.insert(index+1, 'x') if @msg[index] == @msg[index+1]
             index +=  2
-          end
-          
+          end          
           #Add an X to the end if the msg is odd.
           @msg += 'x' if @msg.size.odd?   
         end
