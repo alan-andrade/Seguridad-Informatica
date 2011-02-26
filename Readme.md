@@ -14,13 +14,10 @@ diferente. Se comienza con la 'y' y luego con la 'x'.
 
 (arreglo de 3 x 3)
 
-`
-[ ['g', 'a', 'l'],
+`[ ['g', 'a', 'l'],`
+`  ['o', 'b', 'c'],`
+`  ['d', 'e', 'f'] ]`
 
-  ['o', 'b', 'c'],
-
-  ['d', 'e', 'f'] ]
-`
 La posicion de la letra 'g' seria. y=0, x=0.
 Y es hacia abajo arriba.
 X es hacia la derecha izquierda.
