@@ -1,3 +1,4 @@
 require './algorithms.rb'
 
-Algorithms::Playfair.encrypt('meet me blah', 'monarchy')
+encrypted = Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')
+p encrypted

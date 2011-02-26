@@ -23,7 +23,7 @@ module Algorithms
       
       private
         def sanitize_args(msg, keyword)
-          raise ArgumentError if msg.empty? or keyword.empty?
+          raise ArgumentError, "Un argumento esta vacio" if msg.empty? or keyword.empty?
           @msg, @keyword  =   msg.delete(" "),  keyword.delete(" ")   #get rid of spaces
         end
         
@@ -35,7 +35,9 @@ module Algorithms
         end
         
         def fill_matrix
-          keyword = @keyword.gsub(/j/, 'i')
+          # change every 'j' with and 'i'
+          keyword   = @keyword.gsub(/j/, 'i')
+          # define an alphabet
           alphabet  = ("a".."z").to_a - keyword.split(//) - ['j'] # Quitamos la `j` porque se toma como `i`
           used_letters = []
           
@@ -56,15 +58,16 @@ module Algorithms
         # Apply the fist rule to the encryption process.
         
         def first_rule
-          msg_as_array  =   @msg.split(//)  # original message as an array of each char. Eg. ['h', 'o', 'l', 'a']
-          msg_as_array.each_index do |index|
-            char_pair = @msg[index..index+1]
-            @msg.insert(index+1, 'x') if  index.even?         and     # insert X's where two chars are repeated.
-                                          char_pair.size > 1  and 
-                                          char_pair[0]==char_pair[1]  
+          # helper variable to iterate over the word in pairs.        
+          index         =   0
+          
+          while index < @msg.size
+            @msg.insert(index+1, 'x') if @msg[index] == @msg[index+1]
+            index +=  2
           end
           
-          @msg+='x' if @msg.size.odd?   #Add an X to the end if the msg is odd.
+          #Add an X to the end if the msg is odd.
+          @msg += 'x' if @msg.size.odd?   
         end
         
      end # class methods
