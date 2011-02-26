@@ -13,13 +13,12 @@ module Algorithms
        
         # Apply first rule to the message
         first_rule       
-
-        for char  in @msg.each_char
-          x , y = 0 , 0
-          x = @matrix.find_index{|first| y = first.find_index{|second| second == char} }
-          puts "#{char}: #{x}, #{y}"
-        end
+        
+        # Play in the matrix to finally encrypt the msg
+        finally_encrypt       
+      
       end
+      
       
       private
         def sanitize_args(msg, keyword)
@@ -69,6 +68,18 @@ module Algorithms
           #Add an X to the end if the msg is odd.
           @msg += 'x' if @msg.size.odd?   
         end
+        
+        # Play with the matrix applying all the rules that this algorithm has
+        # in order to finish with the encryption
+        def finally_encrypt
+          for char  in @msg.each_char
+              x , y = 0 , 0
+              x = @matrix.find_index{|first| y = first.find_index{|second| second == char} }
+              puts "#{char}: #{x}, #{y}"
+              # TODO: END the matrix plays to encrypt!
+          end
+        end
+        
         
      end # class methods
   end # class
