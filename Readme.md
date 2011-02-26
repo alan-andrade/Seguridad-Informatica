@@ -13,12 +13,11 @@ diferente. Se comienza con la 'y' y luego con la 'x'.
 * Ejemplo *
 (arreglo de 3 x 3)
 
-` [ ['g', 'a', 'l'],
-
-    ['o', 'b', 'c'],
-    
-    ['d', 'e', 'f'] ] `
-
+```ruby 
+[ ['g', 'a', 'l'],
+  ['o', 'b', 'c'],
+  ['d', 'e', 'f'] ]
+```
 La posicion de la letra 'g' seria. y=0, x=0.
 Y es hacia abajo arriba.
 X es hacia la derecha izquierda.
@@ -32,6 +31,8 @@ Aun esta en planeacion.
 
 ## Para correrlo.
 
-`require './algorithms.rb'
+```ruby
+require './algorithms.rb'
 
-Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')`
+Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')
+```
