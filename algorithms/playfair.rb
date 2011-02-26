@@ -4,7 +4,7 @@ module Algorithms
       # Encrypt a msg using playfair cyper method.
       # You need to give the msg, and the keyword with wich
       #  will be used to encrypt.
-      def encrypt(msg, keyword)          
+      def encrypt(msg, keyword=nil)          
         # Ensure arguments have no spaces and exists
         sanitize_args(msg,keyword)
         
@@ -17,13 +17,18 @@ module Algorithms
         # Play in the matrix to finally encrypt the msg
         finally_encrypt       
       
-      end
-      
+      end      
       
       private
         def sanitize_args(msg, keyword)
-          raise ArgumentError, "Un argumento esta vacio" if msg.empty? or keyword.empty?
+          raise ArgumentError, "Un argumento esta vacio" if msg.empty?
+          keyword = ask_keyword if keyword.nil?
           @msg, @keyword  =   msg.delete(" "),  keyword.delete(" ")   #get rid of spaces
+        end
+        
+        def ask_keyword
+          p "Enter passphrase: "
+          gets.chomp
         end
         
         def define_matrix
@@ -70,14 +75,59 @@ module Algorithms
         # Play with the matrix applying all the rules that this algorithm has
         # in order to finish with the encryption
         def finally_encrypt
-          for char  in @msg.each_char
-              x , y = 0 , 0
-              x = @matrix.find_index{|first| y = first.find_index{|second| second == char} }
-              puts "#{char}: #{x}, #{y}"
-              # TODO: END the matrix plays to encrypt!
+          @encrypted_msg  = ''
+          # Smelly code. giak! try to refactor using a function that iterates and yields a pair of chars.
+          index = 0
+          while index < @msg.size
+            # Get coords for each pair of chars.            
+            a_coords  = find_char_in_matrix(@msg[index])
+            b_coords  = find_char_in_matrix(@msg[index+1])
+            
+            # Apply rules of movement in the key matrix
+            movement_in_matrix(a_coords,b_coords)      
+                  
+            index +=  2
+          end
+          @encrypted_msg
+        end
+        
+        def find_char_in_matrix(char)
+          x , y = nil , nil
+          y = @matrix.find_index{|first| x = first.find_index{|second| second == char} }
+          return [x,y] if not x.nil? and not y.nil?
+          raise "No existe la letra en la matriz de llave" if x.nil? or y.nil?
+        end
+        
+        def movement_in_matrix(a_coords,b_coords)
+          # Keep ALL the coords in a hash to facilitate manipulation.
+          coords  = Hash.new()
+          coords[:x1],  coords[:y1] = a_coords[0],  a_coords[1]
+          coords[:x2],  coords[:y2] = b_coords[0],  b_coords[1]
+          require 'pp'
+          same_row(coords)
+          same_column(coords)
+          cross(coords)
+        end 
+               
+        def same_row(coords)
+          if coords[:y1] == coords[:y2]
+            rotate_right = @matrix[coords[:y1]].rotate
+            @encrypted_msg += rotate_right[coords[:x1]] + rotate_right[coords[:x2]]
           end
         end
         
+        def same_column(coords)
+          if coords[:x1] == coords[:x2]
+            rotate_down = @matrix.rotate
+            @encrypted_msg  +=  rotate_down[coords[:y1]][coords[:x1]] + rotate_down[coords[:y2]][coords[:x2]]
+          end
+        end
+        
+        def cross(coords)
+          if coords[:x1] != coords[:x2] and coords[:y1] != coords[:y2]
+            @encrypted_msg += @matrix[coords[:y1]][coords[:x2]] + @matrix[coords[:y2]][coords[:x1]]
+          end
+        end
         
      end # class methods
   end # class
