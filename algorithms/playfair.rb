@@ -17,6 +17,7 @@ module Algorithms
         # Encrypt the message
         encryption_decryption(:encrypt)             
       end
+      
       def decrypt(msg)
         sanitize_args(msg)
         define_matrix
@@ -50,29 +51,27 @@ module Algorithms
             alphabet  = ("a".."z").to_a - keyword.split(//) - ['j'] # Quitamos la `j` porque se toma como `i`
             used_letters = []
             
-            ## Llenado de matriz
+            ## Iterate over ALL the key matrix
             @matrix.each_index do |index|
               @matrix[index].each_index do |inner_index|
+                # do/while for select either a character from the keyword, or the alphabet.
                 begin
                   letter  = (keyword.slice!(0) || alphabet.delete_at(0))
-                end while (not  letter.nil?           and 
-                           not  used_letters.empty?   and 
-                           used_letters.include?(letter))                      
-                used_letters  <<  letter            # la agregamos al arreglo de letras usadas.
-                @matrix[index][inner_index] = letter # y llenamos la matriz.      
+                end while (not  used_letters.empty?   and 
+                           used_letters.include?(letter))
+                used_letters  <<  letter            
+                @matrix[index][inner_index] = letter
               end
             end
           end
         
         # Apply the fist rule to the encryption process.
-        
-        def first_rule
-          # helper variable to iterate over the word in pairs.        
-          index         =   0          
+        def first_rule          
+          index = 0          
           while index < @msg.size
             @msg.insert(index+1, 'x') if @msg[index] == @msg[index+1]
             index +=  2
-          end          
+          end
           #Add an X to the end if the msg is odd.
           @msg += 'x' if @msg.size.odd?   
         end
@@ -100,7 +99,7 @@ module Algorithms
           x , y = nil , nil
           y = @matrix.find_index{|first| x = first.find_index{|second| second == char} }
           return [x,y] if not x.nil? and not y.nil?
-          raise "No existe la letra en la matriz de llave" if x.nil? or y.nil?
+          raise "No existe la letra en la matriz de llave"
         end
         
         def movement_in_matrix(a_coords,b_coords, action)
@@ -108,31 +107,28 @@ module Algorithms
           coords  = Hash.new()
           coords[:x1],  coords[:y1] = a_coords[0],  a_coords[1]
           coords[:x2],  coords[:y2] = b_coords[0],  b_coords[1]
-          same_row(coords,action)
-          same_column(coords,action)
-          cross(coords,action)
+          movements(coords,action)
         end 
-               
+           
+        def movements(coords,action)
+          same_row(coords,action)     if coords[:y1] == coords[:y2]
+          same_column(coords,action)  if coords[:x1] == coords[:x2]
+          cross(coords,action)        if coords[:x1] != coords[:x2] and coords[:y1] != coords[:y2]
+        end    
         def same_row(coords, action)
-          if coords[:y1] == coords[:y2]
-            rotate = @matrix[coords[:y1]].rotate  if action==:encrypt       # Rotate Right
-            rotate = @matrix[coords[:y1]].rotate(-1)  if action==:decrypt   # Rotate Left
-            @encrypted_msg += rotate[coords[:x1]] + rotate[coords[:x2]]
-          end
+          rotate = @matrix[coords[:y1]].rotate      if action==:encrypt   # Rotate Right
+          rotate = @matrix[coords[:y1]].rotate(-1)  if action==:decrypt   # Rotate Left
+          @encrypted_msg += rotate[coords[:x1]] + rotate[coords[:x2]]
         end
         
         def same_column(coords, action)
-          if coords[:x1] == coords[:x2]
-            rotate  = @matrix.rotate      if action ==  :encrypt                 # Rotate Down
-            rotate  = @matrix.rotate(-1)  if action ==  :decrypt                 # Rotate Up
-            @encrypted_msg  +=  rotate[coords[:y1]][coords[:x1]] + rotate[coords[:y2]][coords[:x2]]
-          end
+          rotate  = @matrix.rotate      if action ==  :encrypt                 # Rotate Down
+          rotate  = @matrix.rotate(-1)  if action ==  :decrypt                 # Rotate Up
+          @encrypted_msg  +=  rotate[coords[:y1]][coords[:x1]] + rotate[coords[:y2]][coords[:x2]]
         end
         
-        def cross(coords, action)
-          if coords[:x1] != coords[:x2] and coords[:y1] != coords[:y2]
-            @encrypted_msg += @matrix[coords[:y1]][coords[:x2]] + @matrix[coords[:y2]][coords[:x1]]
-          end
+        def cross(coords, action)          
+          @encrypted_msg += @matrix[coords[:y1]][coords[:x2]] + @matrix[coords[:y2]][coords[:x1]]
         end
         
      end # class methods
