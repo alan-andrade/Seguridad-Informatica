@@ -38,26 +38,26 @@ module Algorithms
           fill_matrix
         end
         
-        def fill_matrix
-          # change every 'j' with and 'i'
-          keyword   = @keyword.gsub(/j/, 'i')
-          # define an alphabet
-          alphabet  = ("a".."z").to_a - keyword.split(//) - ['j'] # Quitamos la `j` porque se toma como `i`
-          used_letters = []
-          
-          ## Llenado de matriz
-          @matrix.each_index do |index|
-            @matrix[index].each_index do |inner_index|
-              begin
-                letter  = (keyword.slice!(0) || alphabet.delete_at(0))
-              end while (not  letter.nil?           and 
-                         not  used_letters.empty?   and 
-                         used_letters.include?(letter))                      
-              used_letters  <<  letter            # la agregamos al arreglo de letras usadas.
-              @matrix[index][inner_index] = letter # y llenamos la matriz.      
+          def fill_matrix
+            # change every 'j' with and 'i'
+            keyword   = @keyword.gsub(/j/, 'i')
+            # define an alphabet
+            alphabet  = ("a".."z").to_a - keyword.split(//) - ['j'] # Quitamos la `j` porque se toma como `i`
+            used_letters = []
+            
+            ## Llenado de matriz
+            @matrix.each_index do |index|
+              @matrix[index].each_index do |inner_index|
+                begin
+                  letter  = (keyword.slice!(0) || alphabet.delete_at(0))
+                end while (not  letter.nil?           and 
+                           not  used_letters.empty?   and 
+                           used_letters.include?(letter))                      
+                used_letters  <<  letter            # la agregamos al arreglo de letras usadas.
+                @matrix[index][inner_index] = letter # y llenamos la matriz.      
+              end
             end
           end
-        end
         
         # Apply the fist rule to the encryption process.
         
@@ -103,7 +103,6 @@ module Algorithms
           coords  = Hash.new()
           coords[:x1],  coords[:y1] = a_coords[0],  a_coords[1]
           coords[:x2],  coords[:y2] = b_coords[0],  b_coords[1]
-          require 'pp'
           same_row(coords)
           same_column(coords)
           cross(coords)
