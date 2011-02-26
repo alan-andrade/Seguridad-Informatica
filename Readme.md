@@ -9,5 +9,5 @@ Aun esta en planeacion.
 
 ## Para correrlo.
 
-   require './algorithms.rb'
-   Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')
+   `require './algorithms.rb'`
+   `Algorithms::Playfair.encrypt('lucy in the sky with diamonds', 'monarchy')`
