@@ -8,5 +8,6 @@ require './algorithms.rb'
 plaintext = Algorithms::DES::Block.new('12345678')
 secretkey = Algorithms::DES::Block.new('xsecretx')
 
-Algorithms::DES.new(plaintext, secretkey)
+ready_to_encrypt  = Algorithms::DES.new(plaintext, secretkey)
+ready_to_encrypt.encrypt
 
