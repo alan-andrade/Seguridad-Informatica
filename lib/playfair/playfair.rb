@@ -29,7 +29,8 @@ module Algorithms
         def sanitize_args(msg, keyword=nil)
           raise ArgumentError, "Un argumento esta vacio" if msg.empty?
           keyword = ask_keyword if keyword.nil?
-          @msg, @keyword  =   msg.delete(" "),  keyword.delete(" ")   #get rid of spaces
+          @msg, @keyword  =   msg.delete(" "),  keyword.delete(" ")   #get rid of spaces and `j`
+          [@msg, @keyword].each{ |word| word.gsub!(/j/, 'i') }
         end
         
         def ask_keyword
@@ -46,7 +47,9 @@ module Algorithms
         
           def fill_matrix
             # change every 'j' with and 'i'
-            keyword   = @keyword.gsub(/j/, 'i')
+            # DEPRECATED: Get rid of 'j' in sanitize args.
+            # keyword   = @keyword.gsub(/j/, 'i')            
+            keyword = @keyword
             # define an alphabet
             alphabet  = ("a".."z").to_a - keyword.split(//) - ['j'] # Quitamos la `j` porque se toma como `i`
             used_letters = []
