@@ -1,5 +1,7 @@
 require 'lib/des/block.rb'
 require 'lib/des/key_schedule.rb'
+require 'lib/des/xor.rb'
+require 'lib/des/feistel.rb'
 
 module Algorithms
   class DES
@@ -50,10 +52,19 @@ module Algorithms
       
       case operation
         when :encrypt
-          k = KS.new('wo')
+          k = KS.new(key.bit_array).sub_keys
         when :decrypt
-          k = nil
-      end      
+          k = KS.new(key.bit_array).sub_keys.reverse            
+      end
+      
+       16.times do |i|
+        l << r[i]
+        r << XOR.run(Feistel.run(r[i], k[i]), l[i])
+      end
+      
+      return p FP.collect{|p| (r.last + l.last)[p - 1]}.join()
+      #return Block.new(FP.collect{|p| (r.last + l.last)[p - 1]})
+      
     end
   end
 end

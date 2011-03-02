@@ -1,9 +1,9 @@
 require './algorithms.rb'
 
-encrypted = Algorithms::Playfair.encrypt('tetsto plano jovenes','alicetrudybob')
-p encrypted
-decrypted = Algorithms::Playfair.decrypt(encrypted)
-p decrypted
+#encrypted = Algorithms::Playfair.encrypt('tetsto plano jovenes','alicetrudybob')
+#p encrypted
+#decrypted = Algorithms::Playfair.decrypt(encrypted)
+#p decrypted
 
 plaintext = Algorithms::DES::Block.new('12345678')
 secretkey = Algorithms::DES::Block.new('xsecretx')
