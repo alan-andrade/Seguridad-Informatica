@@ -62,8 +62,8 @@ module Algorithms
         r << XOR.run(Feistel.run(r[i], k[i]), l[i])
       end
       
-      return p FP.collect{|p| (r.last + l.last)[p - 1]}.join()
-      #return Block.new(FP.collect{|p| (r.last + l.last)[p - 1]})
+      
+      return Block.new(FP.collect{|p| (r.last + l.last)[p - 1]})
       
     end
   end

@@ -69,11 +69,9 @@ module Algorithms
           end
         
         # Apply the fist rule to the encryption process.
-        def first_rule          
-          index = 0          
-          while index < @msg.size
-            @msg.insert(index+1, 'x') if @msg[index] == @msg[index+1]
-            index +=  2
+        def first_rule                    
+          @msg.each_pair do |first, second, index|            
+            @msg.insert(index, 'x') if first == second
           end
           #Add an X to the end if the msg is odd.
           @msg += 'x' if @msg.size.odd?   
@@ -83,18 +81,16 @@ module Algorithms
         # in order to finish with the encryption
         def encryption_decryption(action)
           @encrypted_msg  = ''
-          # Smelly code. giak! try to refactor using a function that iterates and yields a pair of chars.
-          index = 0
-          while index < @msg.size
+          
+          @msg.each_pair do |first, second, index|
             # Get coords for each pair of chars.            
-            a_coords  = find_char_in_matrix(@msg[index])
-            b_coords  = find_char_in_matrix(@msg[index+1])
+            a_coords  = find_char_in_matrix(first)
+            b_coords  = find_char_in_matrix(second)
             
             # Apply rules of movement in the key matrix
-            movement_in_matrix(a_coords,b_coords, action)      
-                  
-            index +=  2
+            movement_in_matrix(a_coords,b_coords, action)
           end
+          
           @encrypted_msg
         end
         
@@ -137,3 +133,14 @@ module Algorithms
      end # class methods
   end # class
 end # module
+
+
+class String
+  def each_pair
+    i = 0
+    while i <= size-1
+      yield(self[i], self[i+1], i)
+      i+=2
+    end
+  end
+end
