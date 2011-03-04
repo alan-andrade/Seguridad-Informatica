@@ -59,7 +59,7 @@ module Algorithms
               @matrix[index].each_index do |inner_index|
                 # do/while for select either a character from the keyword, or the alphabet.
                 begin
-                  letter  = (keyword.slice!(0) || alphabet.delete_at(0))
+                  letter  = (keyword.slice!(0) or alphabet.delete_at(0))
                 end while (not  used_letters.empty?   and 
                            used_letters.include?(letter))
                 used_letters  <<  letter            
@@ -97,15 +97,15 @@ module Algorithms
         def find_char_in_matrix(char)
           x , y = nil , nil
           y = @matrix.find_index{|first| x = first.find_index{|second| second == char} }
-          return [x,y] if not x.nil? and not y.nil?
+          return {:x=>x, :y=>y} if not x.nil? and not y.nil?
           raise "No existe la letra en la matriz de llave"
         end
         
         def movement_in_matrix(a_coords,b_coords, action)
           # Keep ALL the coords in a hash to facilitate manipulation.
           coords  = Hash.new()
-          coords[:x1],  coords[:y1] = a_coords[0],  a_coords[1]
-          coords[:x2],  coords[:y2] = b_coords[0],  b_coords[1]
+          coords[:x1],  coords[:y1] = a_coords[:x],  a_coords[:y]
+          coords[:x2],  coords[:y2] = b_coords[:x],  b_coords[:y]
           movements(coords,action)
         end 
            

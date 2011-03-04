@@ -1,6 +1,6 @@
 require './algorithms.rb'
 
-encrypted = Algorithms::Playfair.encrypt('tetsto plano jovenes','gallo')
+encrypted = Algorithms::Playfair.encrypt('tetsto plano jovenes')
 p encrypted
 decrypted = Algorithms::Playfair.decrypt(encrypted)
 p decrypted
